@@ -19,7 +19,7 @@ describe "#update_quality" do
         Then { item.quality.should == initial_quality-1 }
       end
 
-      pending context "on sell date" do
+      context "on sell date" do
         Given(:initial_sell_in) { 0 }
         Then { item.quality.should == initial_quality-2 }
       end
