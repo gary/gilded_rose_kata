@@ -9,11 +9,15 @@ class ItemManager
   def update_quality
     item.sell_in -= 1
 
-    if on_sell_in?
+    if on_sell_in? || after_sell_in?
       item.quality -= 2
     else
       item.quality -= 1
     end
+  end
+
+  private def after_sell_in?
+    item.sell_in < -1
   end
 
   private def on_sell_in?
