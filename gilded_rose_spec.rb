@@ -35,7 +35,7 @@ describe "#update_quality" do
       end
     end
 
-    context "Aged Brie" do
+    pending context "Aged Brie" do
       Given(:name) { "Aged Brie" }
 
       Invariant { item.sell_in.should == initial_sell_in-1 }
@@ -75,7 +75,7 @@ describe "#update_quality" do
       end
     end
 
-    context "Sulfuras" do
+    pending context "Sulfuras" do
       Given(:initial_quality) { 80 }
       Given(:name) { "Sulfuras, Hand of Ragnaros" }
 
@@ -96,7 +96,7 @@ describe "#update_quality" do
       end
     end
 
-    context "Backstage pass" do
+    pending context "Backstage pass" do
       Given(:name) { "Backstage passes to a TAFKAL80ETC concert" }
 
       Invariant { item.sell_in.should == initial_sell_in-1 }
@@ -161,7 +161,7 @@ describe "#update_quality" do
       end
     end
 
-    context "conjured item" do
+    pending context "conjured item" do
       before { pending }
       Given(:name) { "Conjured Mana Cake" }
 
@@ -199,11 +199,11 @@ describe "#update_quality" do
     end
   end
 
-  context "with several objects" do
+  pending context "with several objects" do
     Given(:items) {
       [
-        Item.new("NORMAL ITEM", 5, 10),
-        Item.new("Aged Brie", 3, 10),
+       Item.new("NORMAL ITEM", 5, 10),
+       Item.new("Aged Brie", 3, 10),
       ]
     }
 
