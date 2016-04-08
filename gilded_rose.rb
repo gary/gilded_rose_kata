@@ -10,7 +10,13 @@ class ItemManager
     item.sell_in -= 1
 
     if valuable?
-      amount = no_longer_sellable? ? 2 : 1
+      amount = if aged_brie?
+                 -1
+               elsif no_longer_sellable?
+                 2
+               else
+                 1
+               end
 
       item.quality -= amount
     end
@@ -18,6 +24,10 @@ class ItemManager
 
   private def after_sell_in?
     item.sell_in < -1
+  end
+
+  private def aged_brie?
+    item.name == 'Aged Brie'
   end
 
   private def no_longer_sellable?
