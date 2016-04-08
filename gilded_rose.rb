@@ -1,51 +1,73 @@
 # :nodoc:
-class ItemManager
-  attr_reader :item
+module Adjustable
+  def update_item
+    adjust_quality
+    adjust_sell_in
+  end
+
+  def adjust_quality
+    raise NotImplementedError
+  end
+
+  def adjust_sell_in
+    @item.sell_in -= 1
+  end
+end
+
+# Item whose sell by date has not yet passed
+class ItemUpdatePolicy
+  include Adjustable
+
+  def self.no_longer_sellable?(item)
+    item.sell_in <= 0
+  end
+
+  def self.policy_for(item)
+    if no_longer_sellable?(item)
+      ExpiredItemUpdatePolicy.new(item)
+    else
+      new(item)
+    end
+  end
 
   def initialize(item)
     @item = item
   end
 
-  def update_quality
-    item.sell_in -= 1
-
+  def adjust_quality
     if valuable?
-      amount = if aged_brie?
-                 -1
-               elsif no_longer_sellable?
-                 2
-               else
-                 1
-               end
-
-      item.quality -= amount unless item.quality == 50
+      @item.quality -= 1 unless @item.quality >= 50
     end
   end
 
-  private def after_sell_in?
-    item.sell_in < -1
+  protected def valuable?
+    !@item.quality.zero?
+  end
+end
+
+# Item whose sell by date has passed
+class ExpiredItemUpdatePolicy < ItemUpdatePolicy
+  def adjust_quality
+    if valuable?
+      @item.quality -= 2 unless @item.quality >= 50
+    end
+  end
+end
+
+# :nodoc:
+class ItemUpdater
+  def initialize(item)
+    @policy = ItemUpdatePolicy.policy_for(item)
   end
 
-  private def aged_brie?
-    item.name == 'Aged Brie'
-  end
-
-  private def no_longer_sellable?
-    on_sell_in? || after_sell_in?
-  end
-
-  private def valuable?
-    !item.quality.zero?
-  end
-
-  private def on_sell_in?
-    item.sell_in == -1
+  def call
+    @policy.update_item
   end
 end
 
 def update_quality(items)
   items.each do |item|
-    ItemManager.new(item).update_quality
+    ItemUpdater.new(item).call
   end
 end
 

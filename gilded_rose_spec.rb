@@ -35,7 +35,7 @@ describe "#update_quality" do
       end
     end
 
-    context "Aged Brie" do
+    pending context "Aged Brie" do
       Given(:name) { "Aged Brie" }
 
       Invariant { item.sell_in.should == initial_sell_in-1 }
@@ -49,7 +49,7 @@ describe "#update_quality" do
         end
       end
 
-      pending context "on sell date" do
+      context "on sell date" do
         Given(:initial_sell_in) { 0 }
         Then { item.quality.should == initial_quality+2 }
 
@@ -58,7 +58,7 @@ describe "#update_quality" do
           Then { item.quality.should == 50 }
         end
 
-        context "with max quality" do
+        pending context "with max quality" do
           Given(:initial_quality) { 50 }
           Then { item.quality.should == initial_quality }
         end
