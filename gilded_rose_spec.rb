@@ -43,7 +43,7 @@ describe "#update_quality" do
       context "before sell date" do
         Then { item.quality.should == initial_quality+1 }
 
-        pending context "with max quality" do
+        context "with max quality" do
           Given(:initial_quality) { 50 }
           Then { item.quality.should == initial_quality }
         end

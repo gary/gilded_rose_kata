@@ -18,7 +18,7 @@ class ItemManager
                  1
                end
 
-      item.quality -= amount
+      item.quality -= amount unless item.quality == 50
     end
   end
 
