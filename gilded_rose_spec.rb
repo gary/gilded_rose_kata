@@ -29,7 +29,7 @@ describe "#update_quality" do
         Then { item.quality.should == initial_quality-2 }
       end
 
-      pending context "of zero quality" do
+      context "of zero quality" do
         Given(:initial_quality) { 0 }
         Then { item.quality.should == 0 }
       end

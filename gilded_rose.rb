@@ -9,15 +9,23 @@ class ItemManager
   def update_quality
     item.sell_in -= 1
 
-    if on_sell_in? || after_sell_in?
-      item.quality -= 2
-    else
-      item.quality -= 1
+    if valuable?
+      amount = no_longer_sellable? ? 2 : 1
+
+      item.quality -= amount
     end
   end
 
   private def after_sell_in?
     item.sell_in < -1
+  end
+
+  private def no_longer_sellable?
+    on_sell_in? || after_sell_in?
+  end
+
+  private def valuable?
+    !item.quality.zero?
   end
 
   private def on_sell_in?
