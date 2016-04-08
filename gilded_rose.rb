@@ -18,12 +18,18 @@ end
 class ItemUpdatePolicy
   include Adjustable
 
+  def self.aged_brie?(item)
+    item.name == 'Aged Brie'
+  end
+
   def self.no_longer_sellable?(item)
     item.sell_in <= 0
   end
 
   def self.policy_for(item)
-    if no_longer_sellable?(item)
+    if aged_brie?(item)
+      AgedBrieUpdatePolicy.new(item)
+    elsif no_longer_sellable?(item)
       ExpiredItemUpdatePolicy.new(item)
     else
       new(item)
@@ -36,8 +42,13 @@ class ItemUpdatePolicy
 
   def adjust_quality
     if valuable?
-      @item.quality -= 1 unless @item.quality >= 50
+      adjust unless @item.quality >= 50
     end
+  end
+
+  # @note quality degrades normally
+  def adjust
+    @item.quality -= 1
   end
 
   protected def valuable?
@@ -47,10 +58,17 @@ end
 
 # Item whose sell by date has passed
 class ExpiredItemUpdatePolicy < ItemUpdatePolicy
-  def adjust_quality
-    if valuable?
-      @item.quality -= 2 unless @item.quality >= 50
-    end
+  # @note once the sell by date has passed, quality degrades twice as fast
+  def adjust
+    @item.quality -= 2
+  end
+end
+
+# @see https://en.wikipedia.org/wiki/Brie
+class AgedBrieUpdatePolicy < ItemUpdatePolicy
+  # @note quality increases as it ages
+  def adjust
+    @item.quality += 1
   end
 end
 
