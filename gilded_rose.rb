@@ -47,7 +47,7 @@ class ItemUpdatePolicy
   end
 
   # @note quality degrades normally
-  def adjust
+  protected def adjust
     @item.quality -= 1
   end
 
@@ -59,7 +59,7 @@ end
 # Item whose sell by date has passed
 class ExpiredItemUpdatePolicy < ItemUpdatePolicy
   # @note once the sell by date has passed, quality degrades twice as fast
-  def adjust
+  protected def adjust
     @item.quality -= 2
   end
 end
@@ -67,7 +67,7 @@ end
 # @see https://en.wikipedia.org/wiki/Brie
 class AgedBrieUpdatePolicy < ItemUpdatePolicy
   # @note quality increases as it ages
-  def adjust
+  protected def adjust
     @item.quality += 1
   end
 end
