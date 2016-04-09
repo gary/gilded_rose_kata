@@ -18,18 +18,10 @@ end
 class ItemUpdatePolicy
   include Adjustable
 
-  def self.aged_brie?(item)
-    item.name == 'Aged Brie'
-  end
-
-  def self.no_longer_sellable?(item)
-    item.sell_in <= 0
-  end
-
   def self.policy_for(item)
-    if aged_brie?(item)
+    if item.aged_brie?
       AgedBrieUpdatePolicy.new(item)
-    elsif no_longer_sellable?(item)
+    elsif !item.sellable?
       ExpiredItemUpdatePolicy.new(item)
     else
       new(item)
@@ -41,7 +33,7 @@ class ItemUpdatePolicy
   end
 
   def adjust_quality
-    if valuable?
+    if @item.valuable?
       adjust unless @item.quality >= 50
     end
   end
@@ -49,10 +41,6 @@ class ItemUpdatePolicy
   # @note quality degrades normally
   protected def adjust
     @item.quality -= 1
-  end
-
-  protected def valuable?
-    !@item.quality.zero?
   end
 end
 
@@ -68,7 +56,9 @@ end
 class AgedBrieUpdatePolicy < ItemUpdatePolicy
   # @note quality increases as it ages
   protected def adjust
-    @item.quality += 1
+    amount = @item.sellable? ? 1 : 2
+
+    @item.quality += amount
   end
 end
 
@@ -83,7 +73,27 @@ class ItemUpdater
   end
 end
 
+def add_predicates(klass:)
+  predicates = <<~CODE
+    def aged_brie?
+      name == 'Aged Brie'
+    end
+
+    def sellable?
+      sell_in > 0
+    end
+
+    def valuable?
+      !quality.zero?
+    end
+  CODE
+
+  klass.class_eval(predicates)
+end
+
 def update_quality(items)
+  add_predicates(klass: items.first.class)
+
   items.each do |item|
     ItemUpdater.new(item).call
   end
