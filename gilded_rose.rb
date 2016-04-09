@@ -33,14 +33,20 @@ class ItemUpdatePolicy
   end
 
   def adjust_quality
-    if @item.valuable?
-      adjust unless @item.quality >= 50
-    end
+    adjust if @item.valuable?
+
+    ensure_quality_limit
   end
 
   # @note quality degrades normally
   protected def adjust
     @item.quality -= 1
+  end
+
+  private def ensure_quality_limit
+    if (over = @item.quality % 50) != @item.quality
+      @item.quality -= over
+    end
   end
 end
 
