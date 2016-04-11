@@ -23,6 +23,8 @@ class ItemUpdatePolicy
       AgedBrieUpdatePolicy.new(item)
     elsif !item.sellable?
       ExpiredItemUpdatePolicy.new(item)
+    elsif item.sulfuras?
+      SulfurasUpdatePolicy.new(item)
     else
       new(item)
     end
@@ -68,6 +70,16 @@ class AgedBrieUpdatePolicy < ItemUpdatePolicy
   end
 end
 
+class SulfurasUpdatePolicy < ItemUpdatePolicy
+  # @note never has to be sold
+  def adjust_sell_in
+  end
+
+  # @note never decreases in quality
+  def adjust_quality
+  end
+end
+
 # :nodoc:
 class ItemUpdater
   def initialize(item)
@@ -87,6 +99,10 @@ def add_predicates(klass:)
 
     def sellable?
       sell_in > 0
+    end
+
+    def sulfuras?
+      name == 'Sulfuras, Hand of Ragnaros'
     end
 
     def valuable?

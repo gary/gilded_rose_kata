@@ -75,7 +75,7 @@ describe "#update_quality" do
       end
     end
 
-    pending context "Sulfuras" do
+    context "Sulfuras" do
       Given(:initial_quality) { 80 }
       Given(:name) { "Sulfuras, Hand of Ragnaros" }
 
@@ -85,12 +85,12 @@ describe "#update_quality" do
         Then { item.quality.should == initial_quality }
       end
 
-      context "on sell date" do
+      pending context "on sell date" do
         Given(:initial_sell_in) { 0 }
         Then { item.quality.should == initial_quality }
       end
 
-      context "after sell date" do
+      pending context "after sell date" do
         Given(:initial_sell_in) { -10 }
         Then { item.quality.should == initial_quality }
       end
