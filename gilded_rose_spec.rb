@@ -96,7 +96,7 @@ describe "#update_quality" do
       end
     end
 
-    pending context "Backstage pass" do
+    context "Backstage pass" do
       Given(:name) { "Backstage passes to a TAFKAL80ETC concert" }
 
       Invariant { item.sell_in.should == initial_sell_in-1 }
@@ -105,57 +105,57 @@ describe "#update_quality" do
         Given(:initial_sell_in) { 11 }
         Then { item.quality.should == initial_quality+1 }
 
-        context "at max quality" do
+        pending context "at max quality" do
           Given(:initial_quality) { 50 }
         end
       end
 
-      context "medium close to sell date (upper bound)" do
+      pending context "medium close to sell date (upper bound)" do
         Given(:initial_sell_in) { 10 }
         Then { item.quality.should == initial_quality+2 }
 
-        context "at max quality" do
+        pending context "at max quality" do
           Given(:initial_quality) { 50 }
           Then { item.quality.should == initial_quality }
         end
       end
 
-      context "medium close to sell date (lower bound)" do
+      pending context "medium close to sell date (lower bound)" do
         Given(:initial_sell_in) { 6 }
         Then { item.quality.should == initial_quality+2 }
 
-        context "at max quality" do
+        pending context "at max quality" do
           Given(:initial_quality) { 50 }
           Then { item.quality.should == initial_quality }
         end
       end
 
-      context "very close to sell date (upper bound)" do
+      pending context "very close to sell date (upper bound)" do
         Given(:initial_sell_in) { 5 }
         Then { item.quality.should == initial_quality+3 }
 
-        context "at max quality" do
+        pending context "at max quality" do
           Given(:initial_quality) { 50 }
           Then { item.quality.should == initial_quality }
         end
       end
 
-      context "very close to sell date (lower bound)" do
+      pending context "very close to sell date (lower bound)" do
         Given(:initial_sell_in) { 1 }
         Then { item.quality.should == initial_quality+3 }
 
-        context "at max quality" do
+        pending context "at max quality" do
           Given(:initial_quality) { 50 }
           Then { item.quality.should == initial_quality }
         end
       end
 
-      context "on sell date" do
+      pending context "on sell date" do
         Given(:initial_sell_in) { 0 }
         Then { item.quality.should == 0 }
       end
 
-      context "after sell date" do
+      pending context "after sell date" do
         Given(:initial_sell_in) { -10 }
         Then { item.quality.should == 0 }
       end
