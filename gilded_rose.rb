@@ -21,10 +21,10 @@ class ItemUpdatePolicy
   def self.policy_for(item)
     if item.aged_brie?
       AgedBrieUpdatePolicy.new(item)
-    elsif !item.sellable?
-      ExpiredItemUpdatePolicy.new(item)
     elsif item.sulfuras?
       SulfurasUpdatePolicy.new(item)
+    elsif !item.sellable?
+      ExpiredItemUpdatePolicy.new(item)
     else
       new(item)
     end
