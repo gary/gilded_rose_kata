@@ -199,7 +199,7 @@ describe "#update_quality" do
     end
   end
 
-  pending context "with several objects" do
+  context "with several objects" do
     Given(:items) {
       [
        Item.new("NORMAL ITEM", 5, 10),
