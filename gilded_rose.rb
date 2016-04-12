@@ -23,9 +23,11 @@ class ItemUpdatePolicy
       AgedBrieUpdatePolicy.new(item)
     elsif item.backstage_pass?
       BackstagePassUpdatePolicy.new(item)
+    elsif item.conjured?
+      ConjuredItemUpdatePolicy.new(item)
     elsif item.sulfuras?
       SulfurasUpdatePolicy.new(item)
-    elsif !item.sellable? || item.conjured?
+    elsif !item.sellable?
       ExpiredItemUpdatePolicy.new(item)
     else
       new(item)
@@ -106,6 +108,16 @@ class BackstagePassUpdatePolicy < ItemUpdatePolicy
 
   private def sell_in_approaching?
     @item.sell_in <= 10
+  end
+end
+
+class ConjuredItemUpdatePolicy < ExpiredItemUpdatePolicy
+  protected def adjust
+    if !@item.sellable?
+      @item.quality -= 4
+    else
+      super
+    end
   end
 end
 
