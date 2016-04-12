@@ -105,7 +105,7 @@ describe "#update_quality" do
         Given(:initial_sell_in) { 11 }
         Then { item.quality.should == initial_quality+1 }
 
-        pending context "at max quality" do
+        context "at max quality" do
           Given(:initial_quality) { 50 }
         end
       end

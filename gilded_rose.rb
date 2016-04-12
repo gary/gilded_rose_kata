@@ -21,6 +21,8 @@ class ItemUpdatePolicy
   def self.policy_for(item)
     if item.aged_brie?
       AgedBrieUpdatePolicy.new(item)
+    elsif item.backstage_pass?
+      BackstagePassUpdatePolicy.new(item)
     elsif item.sulfuras?
       SulfurasUpdatePolicy.new(item)
     elsif !item.sellable?
@@ -80,6 +82,12 @@ class SulfurasUpdatePolicy < ItemUpdatePolicy
   end
 end
 
+class BackstagePassUpdatePolicy < ItemUpdatePolicy
+  protected def adjust
+    @item.quality += 1
+  end
+end
+
 # :nodoc:
 class ItemUpdater
   def initialize(item)
@@ -95,6 +103,10 @@ def add_predicates(klass:)
   predicates = <<~CODE
     def aged_brie?
       name == 'Aged Brie'
+    end
+
+    def backstage_pass?
+      name == 'Backstage passes to a TAFKAL80ETC concert'
     end
 
     def sellable?
