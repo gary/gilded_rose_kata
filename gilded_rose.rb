@@ -84,7 +84,11 @@ end
 
 class BackstagePassUpdatePolicy < ItemUpdatePolicy
   protected def adjust
-    @item.quality += 1
+    @item.quality += sell_in_approaching? ? 2 : 1
+  end
+
+  private def sell_in_approaching?
+    @item.sell_in <= 10
   end
 end
 

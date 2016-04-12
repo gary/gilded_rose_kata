@@ -110,21 +110,21 @@ describe "#update_quality" do
         end
       end
 
-      pending context "medium close to sell date (upper bound)" do
+      context "medium close to sell date (upper bound)" do
         Given(:initial_sell_in) { 10 }
         Then { item.quality.should == initial_quality+2 }
 
-        pending context "at max quality" do
+        context "at max quality" do
           Given(:initial_quality) { 50 }
           Then { item.quality.should == initial_quality }
         end
       end
 
-      pending context "medium close to sell date (lower bound)" do
+      context "medium close to sell date (lower bound)" do
         Given(:initial_sell_in) { 6 }
         Then { item.quality.should == initial_quality+2 }
 
-        pending context "at max quality" do
+        context "at max quality" do
           Given(:initial_quality) { 50 }
           Then { item.quality.should == initial_quality }
         end
