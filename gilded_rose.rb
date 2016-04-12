@@ -84,7 +84,19 @@ end
 
 class BackstagePassUpdatePolicy < ItemUpdatePolicy
   protected def adjust
-    @item.quality += sell_in_approaching? ? 2 : 1
+    adjustment = if sell_in_within_5_days?
+                   3
+                 elsif sell_in_approaching?
+                   2
+                 else
+                   1
+                 end
+
+    @item.quality += adjustment
+  end
+
+  private def sell_in_within_5_days?
+    @item.sell_in <= 5
   end
 
   private def sell_in_approaching?
