@@ -83,16 +83,21 @@ class SulfurasUpdatePolicy < ItemUpdatePolicy
 end
 
 class BackstagePassUpdatePolicy < ItemUpdatePolicy
+  # @note increases in value as sell_in approaches, then quality drops
+  #       to 0 after the concert
   protected def adjust
-    adjustment = if sell_in_within_5_days?
-                   3
-                 elsif sell_in_approaching?
-                   2
-                 else
-                   1
-                 end
-
-    @item.quality += adjustment
+    if @item.sellable?
+      adjustment = if sell_in_within_5_days?
+                     3
+                   elsif sell_in_approaching?
+                     2
+                   else
+                     1
+                   end
+      @item.quality += adjustment
+    else
+      @item.quality = 0
+    end
   end
 
   private def sell_in_within_5_days?

@@ -150,12 +150,12 @@ describe "#update_quality" do
         end
       end
 
-      pending context "on sell date" do
+      context "on sell date" do
         Given(:initial_sell_in) { 0 }
         Then { item.quality.should == 0 }
       end
 
-      pending context "after sell date" do
+      context "after sell date" do
         Given(:initial_sell_in) { -10 }
         Then { item.quality.should == 0 }
       end
