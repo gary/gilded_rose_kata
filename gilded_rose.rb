@@ -25,7 +25,7 @@ class ItemUpdatePolicy
       BackstagePassUpdatePolicy.new(item)
     elsif item.sulfuras?
       SulfurasUpdatePolicy.new(item)
-    elsif !item.sellable?
+    elsif !item.sellable? || item.conjured?
       ExpiredItemUpdatePolicy.new(item)
     else
       new(item)
@@ -128,6 +128,10 @@ def add_predicates(klass:)
 
     def backstage_pass?
       name == 'Backstage passes to a TAFKAL80ETC concert'
+    end
+
+    def conjured?
+      name =~ /^Conjured/
     end
 
     def sellable?

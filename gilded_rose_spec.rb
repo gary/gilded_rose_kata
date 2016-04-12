@@ -161,8 +161,7 @@ describe "#update_quality" do
       end
     end
 
-    pending context "conjured item" do
-      before { pending }
+    context "conjured item" do
       Given(:name) { "Conjured Mana Cake" }
 
       Invariant { item.sell_in.should == initial_sell_in-1 }
@@ -177,7 +176,7 @@ describe "#update_quality" do
         end
       end
 
-      context "on sell date" do
+      pending context "on sell date" do
         Given(:initial_sell_in) { 0 }
         Then { item.quality.should == initial_quality-4 }
 
@@ -187,7 +186,7 @@ describe "#update_quality" do
         end
       end
 
-      context "after sell date" do
+      pending context "after sell date" do
         Given(:initial_sell_in) { -10 }
         Then { item.quality.should == initial_quality-4 }
 
@@ -199,7 +198,7 @@ describe "#update_quality" do
     end
   end
 
-  context "with several objects" do
+  pending context "with several objects" do
     Given(:items) {
       [
        Item.new("NORMAL ITEM", 5, 10),
